@@ -79,7 +79,7 @@ class BattleShip{
                 }
             }
             if(flag){
-                console.log(`${inputPlayer[i]} attack hit enemy ship !`)
+                console.log(`${inputPlayer[i]} hit enemy ship !`)
             }
             else{
                 console.log(`Attack missed.`)

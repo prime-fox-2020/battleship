@@ -62,7 +62,12 @@ class BattleShip{
     showBoard(){
         let temp = ''
         for(let i = 0; i < this.arr.length; i++){
-            temp += '|' + this.arr[i].join('|') + '\n'
+            if(i === 0){
+                temp += '|' + this.arr[i].join('|') + '|\n'
+            }
+            else{
+                temp += '|' + this.arr[i].join('|') + ' |\n'
+            }
         }
         return temp
     }
@@ -71,11 +76,26 @@ class BattleShip{
         const inputPlayer = process.argv
         for(let i = 2; i < inputPlayer.length; i++){
             let flag = false
+            let dict = 'ABCDEFGHIJ'
+            let y = parseInt(inputPlayer[i][1])
+            let x 
+            for(let k = 0; k < dict.length; k++){
+                if(inputPlayer[i][0] === dict[k]){
+                    x = parseInt(k+1)
+                }
+            }
+            if(x===10){
+                y = 10
+            }
             for(let j = 0; j < game.target.length; j++){
                 if(inputPlayer[i] === game.target[j]){
                     score++
                     flag = true
+                    this.arr[x][y] = 'X'
                     break
+                }
+                else{
+                    this.arr[x][y] = '/'
                 }
             }
             if(flag){
@@ -86,10 +106,10 @@ class BattleShip{
             }
         }
         if(score === 0){
-            console.log(`Sorry, your score is 0 :(`)
+            console.log(`Sorry, your score is 0 :(\n`)
         }
         else{
-            console.log(`Yeayy! Your score is ${score}`)
+            console.log(`Yeayy! Your score is ${score}\n`)
         }
     }
 }
@@ -101,5 +121,8 @@ game.addEnemy(new Fleet('Aircraft carrier', 5, '◆'))
 game.addEnemy(new Fleet('Battleship', 4, '◇'))
 game.addEnemy(new Fleet('Cruiser', 3, '❖'))
 game.addEnemy(new Fleet('Destroyer', 2, '◈'))
-console.log(game.showBoard())
 game.attackEnemy()
+console.log(game.showBoard())
+
+// TEST CASE
+// node index.js A1 B2 C3 D4 E5 F6 G7 H8 I9 J10

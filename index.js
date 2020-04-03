@@ -112,17 +112,21 @@ class BattleShip{
             console.log(`Yeayy! Your score is ${score}\n`)
         }
     }
+
+    play(){
+        game.initBoard()
+        game.addEnemy(new Fleet('Aircraft carrier', 5, '◆'))
+        game.addEnemy(new Fleet('Battleship', 4, '◇'))
+        game.addEnemy(new Fleet('Cruiser', 3, '❖'))
+        game.addEnemy(new Fleet('Destroyer', 2, '◈'))
+        game.attackEnemy()
+        console.log(game.showBoard())
+    }
 }
 
 
 var game = new BattleShip(10)
-game.initBoard()
-game.addEnemy(new Fleet('Aircraft carrier', 5, '◆'))
-game.addEnemy(new Fleet('Battleship', 4, '◇'))
-game.addEnemy(new Fleet('Cruiser', 3, '❖'))
-game.addEnemy(new Fleet('Destroyer', 2, '◈'))
-game.attackEnemy()
-console.log(game.showBoard())
+game.play()
 
 // TEST CASE
 // node index.js A1 B2 C3 D4 E5 F6 G7 H8 I9 J10

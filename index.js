@@ -72,16 +72,9 @@ class BattleField {
 }
 
 function fleetDeploy(battlefield, ship, coordinate, orientation = 'horizontal') {
-    // split the coordinate
-    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    let row = coordinate[0];
-    const column = +coordinate.substr(1);
-    for (let i in alphabet) {
-        if (alphabet[i] == row) {
-            row = +i;
-            break;
-        }
-    }
+    const coord = checkCoordinate(coordinate);
+    const row = coord[0];
+    const column = coord[1];
 
     let char = '';
     switch (ship.constructor.name) {
@@ -145,6 +138,19 @@ function fleetDeploy(battlefield, ship, coordinate, orientation = 'horizontal') 
     }
 }
 
+function checkCoordinate(coordinate) {
+    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let row = coordinate[0];
+    const column = +coordinate.substr(1);
+    for (let i in alphabet) {
+        if (alphabet[i] == row) {
+            row = +i;
+            break;
+        }
+    }
+    return [row, column];
+}
+
 function randomDeploy(fleets, battlefield) {
     for (let fleet of fleets) {
         let deploymentSucces = false;
@@ -173,12 +179,14 @@ function randomOrientation() {
     }
 }
 
-function generateFleets() {
+function generateFleets(set = 1) {
     let fleets = [];
-    fleets.push(new AirCraft);
-    fleets.push(new Battleship);
-    fleets.push(new Cruiser);
-    fleets.push(new Destroyer);
+    for (let i = 0; i < set; i++) {
+        fleets.push(new AirCraft);
+        fleets.push(new Battleship);
+        fleets.push(new Cruiser);
+        fleets.push(new Destroyer);
+    }
     return fleets;
 }
 
@@ -210,12 +218,45 @@ function printBoard(battlefield) {
     }
     console.log(limiter);
 }
+function attack(battlefield) {
+    let input = process.argv;
+    for (let i = 2; i < input.length; i++) {
+        const coord = checkCoordinate(input[i]);
+        const row = coord[0];
+        const column = coord[1];
+        if (battlefield.arena[row] == undefined) {
+            console.log("Invalid coordinate!");
+        } else if (battlefield.arena[row][column-1] == undefined) {
+            console.log("Invalid coordinate!");
+        } else if (battlefield.arena[row][column-1] != ' ') {
+            let ship = '';
+            if (battlefield.arena[row][column-1] == 'A') {
+                ship = "Aircraft";
+            } else if (battlefield.arena[row][column-1] == 'B') {
+                ship = "Battleship";
+            } else if (battlefield.arena[row][column-1] == 'C') {
+                ship = "Cruiser";
+            } else if (battlefield.arena[row][column-1] == 'D') {
+                ship = "Destroyer";
+            }
+            console.log(`You take down the ${ship}!`);
+            battlefield.arena[row][column-1] = 'X';
+        } else {
+            console.log("You miss!");
+        }
+    }
+}
 
-const armada = generateFleets();
+const armada = generateFleets(1); // How many set of fleet
 const lautJawa = new BattleField(10); // Set board dimention
+// Deploy the fleet to the arena randomly
 randomDeploy(armada, lautJawa);
-// console.log(armada);
+// Start the battle
+attack(lautJawa);
+// See the result
 printBoard(lautJawa);
+// Guess the coordinate
+// node index.js A2 B5 C2 D14 H7 D3 K7 I10 J1 E4 F6 G7 B0
 
 // let available = true;
 // let j = 0; let k = 0;

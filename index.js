@@ -87,8 +87,8 @@ class BattleShip{
             if(x===10){
                 y = 10
             }
-            for(let j = 0; j < game.target.length; j++){
-                if(inputPlayer[i] === game.target[j]){
+            for(let j = 0; j < this._target.length; j++){
+                if(inputPlayer[i] === this._target[j]){
                     score++
                     flag = true
                     this.arr[x][y] = 'X'
@@ -114,11 +114,6 @@ class BattleShip{
     }
 
     play(){
-        game.initBoard()
-        game.addEnemy(new Fleet('Aircraft carrier', 5, '◆'))
-        game.addEnemy(new Fleet('Battleship', 4, '◇'))
-        game.addEnemy(new Fleet('Cruiser', 3, '❖'))
-        game.addEnemy(new Fleet('Destroyer', 2, '◈'))
         game.attackEnemy()
         console.log(game.showBoard())
     }
@@ -126,6 +121,14 @@ class BattleShip{
 
 
 var game = new BattleShip(10)
+//init game setup and adding how many enemy ships
+game.initBoard()
+game.addEnemy(new Fleet('Aircraft carrier', 5, '◆'))
+game.addEnemy(new Fleet('Battleship', 4, '◇'))
+game.addEnemy(new Fleet('Cruiser', 3, '❖'))
+game.addEnemy(new Fleet('Destroyer', 2, '◈'))
+
+//attack begins
 game.play()
 
 // TEST CASE

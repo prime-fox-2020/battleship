@@ -1,6 +1,6 @@
 A sample board for visualization/testing purposes:
 
-     A   B   C   D   E   F   G   H   I   J
+     A   B   C   D   E   F   G   H   I   J  
    +---------------------------------------+
  1 |   |   |   |   |   |   |   |   |   |   |
    |---|---|---|---|---|---|---|---|---|---|

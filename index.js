@@ -112,10 +112,9 @@ class BattleShip{
             console.log(`Yeayy! Your score is ${score}\n`)
         }
     }
-
     play(){
-        game.attackEnemy()
-        console.log(game.showBoard())
+        this.attackEnemy()
+        console.log(this.showBoard())
     }
 }
 

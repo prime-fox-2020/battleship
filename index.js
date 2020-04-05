@@ -92,36 +92,42 @@ class Sea {
     }
 
     fireShip(arr) {
-        let huruf = ' ABCDEFGHIJ', convert = [], x, y;
-        for (let i = 2; i < arr.length; i++){
+        let huruf = 'ABCDEFGHIJ', convert = [], x, y;
+        for (let i = 2; i < arr.length; i++) {
             for (let j in huruf) {
-                if (arr[i][0] == huruf[j]) y = +j;
-                break;
+                if (arr[i][0] == huruf[j]) {
+                    y = +j;
+                    break;
+                }
             }
             convert.push([Number(arr[i][1]) - 1, y]);
         }
         let fired = [];
-        for (let i = 0; i < convert.length; i++){
-            for (let j in this.ship){
-                let kena = false;
-                for (let k in this.ship[j]){
-                    if (convert[i] == this.ship[j][k]);
-                    kena = true;
-                    let cond = false;
-                    for (let l in fired){
-                        if (fired[l] == j) {
-                            cond = true;
-                            break;
+        for (let i = 0; i < convert.length; i++) {
+            let kena = false;
+            for (let j = 0; j < this.ship.length; j++) {
+                for (let k in this.ship[j]) {
+                    let a = this.ship[j][k][0], b = this.ship[j][k][1];
+                    if (convert[i][0] == a && convert[i][1] == b) {
+                        kena = true;
+                        let cond = false;
+                        for (let l in fired) {
+                            if (fired[l] == j) {
+                                cond = true;
+                                break;
+                            }
                         }
+                        if (cond == false) {
+                            fired.push(j);
+                            this.firedShip++;
+                        }
+                        this.area[convert[i][0]][convert[i][1]] = 'x';
+                        j = this.ship.length;
+                        break;
                     }
-                    if (cond == false) {
-                        fired.push(j);
-                        this.firedShip ++;
-                    }
-                    this.area[convert[i][0]][convert[i][1]] == 'X';
                 }
-                if (kena == false) this.area[convert[i][0]][convert[i][1]] == '/';
             }
+            if (kena == false) this.area[convert[i][0]][convert[i][1]] = '/';
         }
     }
 
@@ -139,16 +145,17 @@ class Sea {
             console.log(print);
             console.log(`-------------------------------------------`)
         }
+        console.log(`Anda mengenai ${this.firedShip} kapal`);
     }
 }
 
 let fire = process.argv;
 const play = (fire) => {
-    let sea = new Sea();
-    sea.create();
-    sea.putShip();
-    sea.fireShip(fire);
-    sea.printBoard();
+let sea = new Sea();
+sea.create();
+sea.putShip();
+sea.fireShip(fire);
+sea.printBoard();
 }
-
+// ['0', 0, 'A5', 'B7', 'C9', 'D7', 'A4']
 play(fire);

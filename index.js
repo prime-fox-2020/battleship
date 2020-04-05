@@ -1,10 +1,12 @@
 console.clear()
-
+let ships = require('./ships.js')
+let newships = new ships()
+let explorercoor = newships.explorer
 let command = process.argv.slice(2,10)
 let thisisA = []
-// thisisA ini menjadi shootforA
 let thisis1 = []
-// thisis1 ini menjadi shootfor1
+
+if (command)
 for(var i = 0 ; i < command.length ; i ++){
     thisisA.push(command[i][0].toLowerCase().charCodeAt(0) - 97)
     }
@@ -15,16 +17,17 @@ for(var i = 0 ; i < command.length ; i ++){
         thisis1.push(9)
         }
     }
-// console.log(command)
-// console.log(thisisA)
-// console.log(thisis1)
-
 
 class gameboard{
     constructor(thisisA,thisis1){
         this.horz = 'X'
         this.userInputA = thisisA
         this.userInput1 = thisis1
+        this.explorer = newships.explorer
+        this.cruiser = newships.cruiser
+        this.battleCruiser = newships.battleCruiser
+        this.destroyer = newships.destroyer
+
     }
     header() {
         return ("     A   B   C   D   E   F   G   H   I   J")
@@ -47,30 +50,25 @@ class gameboard{
                 Vert.push(Horz)
             }
             AllCells.push(Vert)
-            // console.log(this.horz)
-            // console.log(Vert)
             Vert=[]
-            /// vert 0 horz 1
         } 
-
-        //change it here
         //semua ship disini
-        let explorer = newships.explorer
+        let explorer = this.explorer
         for(var i = 0 ; i < explorer.length; i ++){
             AllCells[explorer[i][1]][explorer[i][0]] = 'E'
         }
         
-        let cruiser = newships.cruiser
+        let cruiser = this.cruiser
         for(var i = 0 ; i < cruiser.length; i ++){
             AllCells[cruiser[i][1]][cruiser[i][0]] = 'C'
         }
         
-        let battleCruiser = newships.battleCruiser
+        let battleCruiser = this.battleCruiser
         for(var i = 0 ; i < battleCruiser.length; i ++){
             AllCells[battleCruiser[i][1]][battleCruiser[i][0]] = 'B'
         }
         
-        let destroyer = newships.destroyer
+        let destroyer = this.destroyer
         console.log(destroyer)
         for(var i = 0 ; i < destroyer.length; i ++){
             AllCells[destroyer[i][1]][destroyer[i][0]] = 'D'
@@ -118,22 +116,11 @@ class gameboard{
     }
 }
 
-
-/////////////// used calculation /////////////// used calculation
-
-// Explorer[[a,b]]
-
-
-let ships = require('./ships.js')
-
-
-
-
-var newships = new ships()
 var game = new gameboard(thisisA,thisis1)
-
-
 
 module.exports = gameboard;
 
-console.log(game.playBoard(thisisA,thisis1))
+
+if(command==""){
+    console.log("you can shoot twice, ex index.js A1 A3")
+}else{console.log(game.playBoard(thisisA,thisis1))}

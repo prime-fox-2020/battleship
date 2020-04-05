@@ -5,7 +5,6 @@ class Armada{
     constructor(data, lautan){
         this.size = data
         this.lautan = lautan
-
     }
 
     letakKapal(){
@@ -60,7 +59,6 @@ class Armada{
         console.log(`----Armada Sebelum-----`)
         console.log(`------Penyerangan------`)
         lautan.display()
-        console.log(`-----------------------\n`)
         return this
 
     }
@@ -76,7 +74,7 @@ class Armada{
                     y = j;
                 }
             }
-
+            // Tandai setelah Tembakan
             if(this.lautan[x][y]!=' '){
                 this.lautan[x][y] = 'X'
             }else{
@@ -85,38 +83,33 @@ class Armada{
         }
     }
 
+    //Cek Status Armada
     checkStatus(){
-        let temp5=0;
-        let temp4=0;
-        let temp3=0;
-        let temp2=0;
+        let temp =[0,0,0,0];
+        let namaArmada=[`Aircraft Carier`,`Battleship`,`Crusier`,`Destroyer`]
         for (let i = 0; i < this.lautan.length; i++) {
             for (let j = 0; j < this.lautan[i].length; j++) {
                 if(this.lautan[i][j]==5){
-                    temp5 ++
+                    temp[0] ++
                 }else if(this.lautan[i][j]==4){
-                    temp4 ++
+                    temp[1] ++
                 }else if(this.lautan[i][j]==3){
-                    temp3 ++
+                    temp[2] ++
                 }else if(this.lautan[i][j]==2){
-                    temp2 ++
+                    temp[3] ++
                 }
             }
         }
-        if(temp5<this.size[0]){
-            console.log(`Selamat!! Armada 'Aircraft Carier' telah Tertembak dan Tenggelam`)
-        }
-        if(temp4<this.size[1]){
-            console.log(`Selamat!! Armada 'Battleship' telah Tertembak dan Tenggelam`)
-        }
-        if(temp3<this.size[2]){
-            console.log(`Selamat!! Armada 'Crusier' telah Tertembak dan Tenggelam`)
-        }
-        if(temp2<this.size[3]){
-            console.log(`Selamat!! Armada 'Destroyer' telah Tertembak dan Tenggelam`)
-        }
-        if(temp5<this.size[0] && temp4<this.size[1] && temp3<this.size[2] && temp2<this.size[3]){
-            console.log(`Semua Kapal Telah TENGGELAM, Kamu Memenangkan GAME ini`)
+        let poin=0
+        for (let i = 0; i < temp.length; i++) {   
+            if(temp[i]<this.size[i]){
+                console.log(`Selamat!! Armada ${namaArmada[i]} telah Tertembak dan Tenggelam`)
+                poin ++
+            }
+
+            if(poin == this.size.length){
+                console.log(`Semua Kapal Telah TENGGELAM, YOU ARE THE WINNER !!`)
+            }
         }
     }
 }
@@ -136,6 +129,7 @@ class Lautan{
             }
             console.log(temp)
         }
+        console.log(`-----------------------\n`)
     }
 }
 

@@ -6,6 +6,7 @@ class Sea {
         this._area = [];
         this._ship = [];
         this._firedShip = 0;
+        this._destroyed = 0;
     }
 
     get area() {
@@ -30,6 +31,14 @@ class Sea {
 
     set firedShip(val) {
         this._firedShip = val;
+    }
+
+    get destroyed() {
+        return this._destroyed;
+    }
+
+    set destroyed(val) {
+        this._destroyed = val;
     }
 
     create() {
@@ -102,7 +111,7 @@ class Sea {
             }
             convert.push([Number(arr[i][1]) - 1, y]);
         }
-        let fired = [];
+        let fired = {};
         for (let i = 0; i < convert.length; i++) {
             let kena = false;
             for (let j = 0; j < this.ship.length; j++) {
@@ -111,17 +120,11 @@ class Sea {
                     if (convert[i][0] == a && convert[i][1] == b) {
                         kena = true;
                         let cond = false;
-                        for (let l in fired) {
-                            if (fired[l] == j) {
-                                cond = true;
-                                break;
-                            }
+                        if (!fired[j]) {
+                            fired[j] = 1;
                         }
-                        if (cond == false) {
-                            fired.push(j);
-                            this.firedShip++;
-                        }
-                        this.area[convert[i][0]][convert[i][1]] = 'x';
+                        else fired[j]++;
+                        this.area[convert[i][0]][convert[i][1]] = 'X';
                         j = this.ship.length;
                         break;
                     }
@@ -129,6 +132,11 @@ class Sea {
             }
             if (kena == false) this.area[convert[i][0]][convert[i][1]] = '/';
         }
+        for (let i in fired){
+            this.firedShip++;
+            if (fired[i] == 5 - Number(i)) this.destroyed++;
+        }
+        
     }
 
     printBoard() {
@@ -145,7 +153,8 @@ class Sea {
             console.log(print);
             console.log(`-------------------------------------------`)
         }
-        console.log(`Anda mengenai ${this.firedShip} kapal`);
+        if (this.firedShip > 0) console.log(`Anda mengenai ${this.firedShip} kapal`);
+        if (this.destroyed > 0) console.log(`Anda menenggelamkan ${this.destroyed} kapal\nYOU WIN!!!`);
     }
 }
 
